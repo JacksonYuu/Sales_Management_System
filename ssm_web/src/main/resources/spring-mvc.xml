@@ -32,9 +32,6 @@
     <mvc:resources location="/images/" mapping="/images/**" />
     <mvc:resources location="/js/" mapping="/js/**" />
     <mvc:resources location="/layui/" mapping="/layui/**" />
-    <mvc:resources location="/layui/" mapping="/layui/***" />
-    <mvc:resources location="/layui/" mapping="/layui/****" />
-    <mvc:resources location="/layui/" mapping="/layui/*****" />
     <mvc:resources location="/fonts/" mapping="/fonts/**" />
 
     <!-- 开启对SpringMVC注解的支持 -->

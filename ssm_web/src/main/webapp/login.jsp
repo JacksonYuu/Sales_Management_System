@@ -5,6 +5,7 @@ Date: 2021/4/5
 Time: 17:43
 To change this template use File | Settings | File Templates.
 --%>
+<%@ taglib prefix="th" uri="http://www.springframework.org/tags/form" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html lang="en">
 <head>
@@ -26,31 +27,25 @@ To change this template use File | Settings | File Templates.
     <div class="login">
         <div class="message">销售管理系统-登录</div>
         <div id="darkbannerwrap"></div>
-        
-        <form method="post" class="layui-form" >
+
+        <form method="post" class="layui-form" action="${pageContext.request.contextPath}/login.do">
             <input name="username" placeholder="用户名"  type="text" lay-verify="required" class="layui-input" >
             <hr class="hr15">
             <input name="password" lay-verify="required" placeholder="密码"  type="password" class="layui-input">
             <hr class="hr15">
-            <input value="登录" lay-submit lay-filter="login" style="width:100%;" type="submit">
-            <hr class="hr20" >
+            <input value="登录" style="width:100%;" type="submit">
+            <hr class="hr10" >
+            <div class="layui-form-item">
+                <span style="color: red; display: none" id="error_span">帐号或密码错误，请重新输入！</span>
+            </div>
         </form>
     </div>
-
-    <script>
-        $(function  () {
-            layui.use('form', function(){
-              var form = layui.form;
-              //监听提交
-              form.on('submit(login)', function(data){
-                // alert(888)JSON.stringify(data.field)
-                layer.msg('登录成功！跳转中......',function(){
-                    location.href='login.do'
-                });
-                return false;
-              });
-            });
-        })
+    <script language="javascript">
+        //获取页面完整地址
+        search = window.location.search;
+        if (search !== "") {
+            document.getElementById("error_span").style.display="inline";
+        }
     </script>
 </body>
 </html>

@@ -21,7 +21,6 @@ import java.util.List;
 @Transactional
 public class UserServiceImpl implements IUserService, UserDetailsService {
 
-
     private IUserDao userDao;
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
@@ -75,7 +74,6 @@ public class UserServiceImpl implements IUserService, UserDetailsService {
             e.printStackTrace();
         }
         //处理自己的用户对象封装成UserDetails
-        //  User user=new User(userInfo.getUsername(),"{noop}"+userInfo.getPassword(),getAuthority(userInfo.getRoles()));
         assert userInfo != null;
         return new User(userInfo.getUsername(), userInfo.getPassword(), userInfo.getStatus() != 0, true, true, true, getAuthority(userInfo.getRoles()));
     }
@@ -85,7 +83,7 @@ public class UserServiceImpl implements IUserService, UserDetailsService {
 
         List<SimpleGrantedAuthority> list = new ArrayList<>();
         for (Role role : roles) {
-            list.add(new SimpleGrantedAuthority("ROLE_" + role.getRoleName()));
+            list.add(new SimpleGrantedAuthority(role.getRoleName()));
         }
         return list;
     }

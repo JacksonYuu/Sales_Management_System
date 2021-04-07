@@ -6,6 +6,7 @@ Time: 17:43
 To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="security" uri="http://www.springframework.org/security/tags" %>
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
@@ -14,30 +15,31 @@ To change this template use File | Settings | File Templates.
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta http-equiv="Cache-Control" content="no-siteapp" />
 
-    <link rel="stylesheet" href="css/font.css">
-	<link rel="stylesheet" href="css/xadmin.css">
-    <script type="text/javascript" src="js/jquery.min.js"></script>
-    <script src="layui/layui.js" charset="utf-8"></script>
-    <script type="text/javascript" src="js/xadmin.js"></script>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/font.css">
+	<link rel="stylesheet" href="${pageContext.request.contextPath}/css/xadmin.css">
+    <script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery.min.js"></script>
+    <script src="${pageContext.request.contextPath}/layui/layui.js" charset="utf-8"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/js/xadmin.js"></script>
 
 </head>
 <body>
     <!-- 顶部开始 -->
     <div class="container">
-        <div class="logo"><a href="./index.jsp">销售管理系统</a></div>
+        <div class="logo"><a href="${pageContext.request.contextPath}/views/index.jsp">销售管理系统</a></div>
         <div class="left_open">
             <i title="展开左侧栏" class="iconfont">&#xe699;</i>
         </div>
         <ul class="layui-nav right" lay-filter="">
           <li class="layui-nav-item">
-            <a href="javascript:;">admin</a>
+            <a href="javascript:;">
+                <security:authentication property="principal.username"/>
+            </a>
             <dl class="layui-nav-child"> <!-- 二级菜单 -->
               <dd><a onclick="x_admin_show('个人信息','http://www.baidu.com')">个人信息</a></dd>
               <dd><a onclick="x_admin_show('切换帐号','http://www.baidu.com')">切换帐号</a></dd>
-              <dd><a href="/logout.do">退出</a></dd>
+              <dd><a href="${pageContext.request.contextPath}/logout.do">退出</a></dd>
             </dl>
           </li>
-          <li class="layui-nav-item to-index"><a href="/">前台首页</a></li>
         </ul>
         
     </div>
@@ -55,14 +57,14 @@ To change this template use File | Settings | File Templates.
                 </a>
                 <ul class="sub-menu">
                     <li>
-                        <a _href="member-list.html">
+                        <a _href="${pageContext.request.contextPath}/views/member-list.jsp">
                             <i class="iconfont">&#xe6a7;</i>
                             <cite>会员列表</cite>
                             
                         </a>
                     </li >
                     <li>
-                        <a _href="member-del.html">
+                        <a _href="${pageContext.request.contextPath}/views/member-del.jsp">
                             <i class="iconfont">&#xe6a7;</i>
                             <cite>会员删除</cite>
                             
@@ -219,7 +221,7 @@ To change this template use File | Settings | File Templates.
           </ul>
           <div class="layui-tab-content">
             <div class="layui-tab-item layui-show">
-                <iframe src='views/welcome.html' frameborder="0" scrolling="yes" class="x-iframe"></iframe>
+                <iframe src='${pageContext.request.contextPath}/views/welcome.jsp' frameborder="0" scrolling="yes" class="x-iframe"></iframe>
             </div>
           </div>
         </div>
