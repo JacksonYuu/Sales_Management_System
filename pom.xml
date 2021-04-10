@@ -17,6 +17,7 @@
         <mybatis.version>3.4.5</mybatis.version>
         <spring.security.version>5.0.1.RELEASE</spring.security.version>
         <thymeleaf.version>2.4.3</thymeleaf.version>
+        <jackson.version>2.9.1</jackson.version>
     </properties>
     <dependencies>        <!-- spring -->
         <dependency>
@@ -187,6 +188,13 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-thymeleaf</artifactId>
             <version>${thymeleaf.version}</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind -->
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>${jackson.version}</version>
         </dependency>
     </dependencies>
     <build>

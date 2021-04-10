@@ -13,10 +13,12 @@
 	http://www.springframework.org/schema/tx
 	http://www.springframework.org/schema/tx/spring-tx.xsd">
 
-    <!-- 开启注解扫描，管理service和dao -->
+    <!-- 开启注解扫描，管理service和dao、mapper -->
     <context:component-scan base-package="com.ssm.service">
     </context:component-scan>
     <context:component-scan base-package="com.ssm.dao">
+    </context:component-scan>
+    <context:component-scan base-package="com.ssm.query">
     </context:component-scan>
 
     <context:property-placeholder location="classpath:jdbc.properties"/>
@@ -35,6 +37,22 @@
     <!-- 把交给IOC管理 SqlSessionFactory -->
     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
         <property name="dataSource" ref="dataSource"/>
+        <property name="plugins">
+            <array>
+                <bean class="com.github.pagehelper.PageInterceptor">
+                    <property name="properties">
+                        <value>
+                            offsetAsPageNum=true        <!-- offset参数当成pageNum使用 -->
+                            rowBoundsWithCount=true     <!-- 进行count查询 -->
+                            pageSizeZero=true           <!-- pageSize=0查询全部 -->
+                            reasonable=true             <!-- 分页合理化参数 -->
+                            autoRuntimeDialect=true     <!-- 多数据源自动识别对应方言 -->
+                            <!-- 其它参数默认就好 -->
+                        </value>
+                    </property>
+                </bean>
+            </array>
+        </property>
     </bean>
     <!-- 扫描dao接口 -->
     <bean id="mapperScanner" class="org.mybatis.spring.mapper.MapperScannerConfigurer">

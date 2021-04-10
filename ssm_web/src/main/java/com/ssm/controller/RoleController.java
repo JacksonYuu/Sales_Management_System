@@ -2,11 +2,18 @@ package com.ssm.controller;
 
 import com.ssm.domain.Permission;
 import com.ssm.domain.Role;
+import com.ssm.domain.UserInfo;
+import com.ssm.query.RoleQuery;
+import com.ssm.query.UsersQuery;
 import com.ssm.service.IRoleService;
+import com.ssm.utils.JsonResult;
+import com.ssm.utils.PageUi;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
@@ -26,17 +33,6 @@ public class RoleController {
     public String deleteRole(@RequestParam(name="id",required = true) String roleId) throws Exception {
         roleService.deleteRoleById(roleId);
         return "redirect:findAll.do";
-    }
-
-    //角色详情查询
-    @RequestMapping("/findById.do")
-    public ModelAndView findById(@RequestParam(name = "id", required = true) String roleId) throws Exception {
-        ModelAndView mv = new ModelAndView();
-        Role role = roleService.findById(roleId);
-
-        mv.addObject("role", role);
-        mv.setViewName("role-show");
-        return mv;
     }
 
     //给角色添加权限
@@ -61,18 +57,68 @@ public class RoleController {
 
     }
 
-    @RequestMapping("/save.do")
-    public String save(Role role) throws Exception {
-        roleService.save(role);
-        return "redirect:findAll.do";
+    @RequestMapping("/findAll")
+    @ResponseBody
+    public List<Role> findAll() throws Exception {
+        return roleService.findAll();
     }
 
-    @RequestMapping("/findAll.do")
-    public ModelAndView findAll() throws Exception {
-        ModelAndView mv = new ModelAndView();
-        List<Role> roleList = roleService.findAll();
-        mv.addObject("roleList", roleList);
-        mv.setViewName("role-list");
-        return mv;
+    @RequestMapping("/findByQuery")
+    @ResponseBody
+    public PageUi<Role> findByQuery(RoleQuery roleQuery) throws Exception {
+        return roleService.findByQuery(roleQuery);
+    }
+
+    //查询指定id的角色
+    @RequestMapping("/findById")
+    @ResponseBody
+    public Role findById(String id) throws Exception {
+        return roleService.findById(id);
+    }
+
+    //修改指定id的账户状态
+    @RequestMapping("/updateStatus")
+    @ResponseBody
+    public JsonResult updateStatus(Role role) throws Exception {
+        try {
+            roleService.updateStatus(role);
+            return new JsonResult(true, "修改角色状态成功！");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new JsonResult(false, "修改角色状态失败！");
+        }
+    }
+
+    //角色添加
+    @RequestMapping("/save")
+    @ResponseBody
+    @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMIN')")
+    public JsonResult save(Role role) {
+        try {
+            if (role.getId() != null) {
+                //有id就是修改
+                roleService.updateRole(role);
+                return new JsonResult(true, "修改角色成功！");
+            } else {
+                roleService.saveRole(role);
+                return new JsonResult(true, "新增角色成功！");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new JsonResult(false, "新增/修改角色失败！");
+        }
+    }
+
+    @RequestMapping("/delete")
+    @ResponseBody
+    public JsonResult delete(String[] ids) {
+        try {
+            // 删除角色
+            roleService.delete(ids);
+            return new JsonResult(true, "删除角色成功！");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new JsonResult(false, "删除角色失败！");
+        }
     }
 }

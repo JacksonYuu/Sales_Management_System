@@ -2,12 +2,17 @@ package com.ssm.controller;
 
 import com.ssm.domain.Role;
 import com.ssm.domain.UserInfo;
+import com.ssm.query.UsersQuery;
+import com.ssm.service.IRoleService;
 import com.ssm.service.IUserService;
+import com.ssm.utils.JsonResult;
+import com.ssm.utils.PageUi;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
@@ -45,30 +50,70 @@ public class UserController {
     }
 
     //查询指定id的用户
-    @RequestMapping("/findById.do")
-    public ModelAndView findById(String id) throws Exception {
-        ModelAndView mv = new ModelAndView();
-        UserInfo userInfo = userService.findById(id);
-        mv.addObject("user", userInfo);
-        mv.setViewName("user-show1");
-        return mv;
+    @RequestMapping("/findById")
+    @ResponseBody
+    public UserInfo findById(String id) throws Exception {
+        return userService.findById(id);
+    }
+
+    //修改指定id的账户状态
+    @RequestMapping("/updateStatus")
+    @ResponseBody
+    public JsonResult updateStatus(UserInfo userInfo) throws Exception {
+        try {
+            userService.updateStatus(userInfo);
+            return new JsonResult(true, "修改账户状态成功！");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new JsonResult(false, "修改账户状态失败！");
+        }
     }
 
     //用户添加
-    @RequestMapping("/save.do")
-    @PreAuthorize("authentication.principal.username == 'tom'")
-    public String save(UserInfo userInfo) throws Exception {
-        userService.save(userInfo);
-        return "redirect:findAll.do";
+    @RequestMapping("/save")
+    @ResponseBody
+    @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMIN')")
+    public JsonResult save(UserInfo userInfo, String[] roleIds) {
+        try {
+            if (userInfo.getId() != null) {
+                //有id就是修改
+                userService.updateUserAndRole(userInfo, roleIds);
+                return new JsonResult(true, "修改用户成功！");
+            } else {
+                userService.saveUserAndRole(userInfo, roleIds);
+                return new JsonResult(true, "新增用户成功！");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new JsonResult(false, "新增/修改用户失败！");
+        }
     }
 
     @RequestMapping("/findAll.do")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ModelAndView findAll() throws Exception {
-        ModelAndView mv = new ModelAndView();
-        List<UserInfo> userList = userService.findAll();
-        mv.addObject("userList", userList);
-        mv.setViewName("user-list");
-        return mv;
+    @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMIN')")
+    @ResponseBody
+    public List<UserInfo> findAll() throws Exception {
+        return userService.findAll();
+    }
+
+    @RequestMapping("/findByQuery")
+    @ResponseBody
+    public PageUi<UserInfo> findByQuery(UsersQuery usersQuery) throws Exception {
+        return userService.findByQuery(usersQuery);
+    }
+
+    @RequestMapping("/delete")
+    @ResponseBody
+    public JsonResult delete(String[] ids) {
+        try {
+            // 删除用户-角色表
+            userService.deleteFromUser_Role(ids);
+            // 删除用户
+            userService.delete(ids);
+            return new JsonResult(true, "删除用户以及用户的角色成功！");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new JsonResult(false, "删除用户以及用户的角色失败！");
+        }
     }
 }

@@ -437,6 +437,10 @@ table th, table td {
 	margin-left: 10px;
 }
 
+.layui-table-cell .layui-form-checkbox[lay-skin="primary"]{
+	top: 50%;
+	transform: translateY(-50%);
+}
 
 @media screen and (max-width: 768px){
 	.fast-add{

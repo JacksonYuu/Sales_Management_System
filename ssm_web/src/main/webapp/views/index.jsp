@@ -10,7 +10,7 @@ To change this template use File | Settings | File Templates.
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
-	<title>登录-销售管理系统</title>
+	<title>欢迎使用-销售管理系统</title>
 	<meta name="renderer" content="webkit|ie-comp|ie-stand">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta http-equiv="Cache-Control" content="no-siteapp" />
@@ -20,7 +20,6 @@ To change this template use File | Settings | File Templates.
     <script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery.min.js"></script>
     <script src="${pageContext.request.contextPath}/layui/layui.js" charset="utf-8"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/js/xadmin.js"></script>
-
 </head>
 <body>
     <!-- 顶部开始 -->
@@ -35,8 +34,6 @@ To change this template use File | Settings | File Templates.
                 <security:authentication property="principal.username"/>
             </a>
             <dl class="layui-nav-child"> <!-- 二级菜单 -->
-              <dd><a onclick="x_admin_show('个人信息','http://www.baidu.com')">个人信息</a></dd>
-              <dd><a onclick="x_admin_show('切换帐号','http://www.baidu.com')">切换帐号</a></dd>
               <dd><a href="${pageContext.request.contextPath}/logout.do">退出</a></dd>
             </dl>
           </li>
@@ -51,8 +48,8 @@ To change this template use File | Settings | File Templates.
         <ul id="nav">
             <li>
                 <a href="javascript:;">
-                    <i class="iconfont">&#xe6b8;</i>
-                    <cite>会员管理</cite>
+                    <i class="iconfont">&#xe726;</i>
+                    <cite>管理员管理</cite>
                     <i class="iconfont nav_right">&#xe697;</i>
                 </a>
                 <ul class="sub-menu">
@@ -62,43 +59,20 @@ To change this template use File | Settings | File Templates.
                             <cite>会员列表</cite>
                             
                         </a>
-                    </li >
-                    <li>
-                        <a _href="${pageContext.request.contextPath}/views/member-del.jsp">
-                            <i class="iconfont">&#xe6a7;</i>
-                            <cite>会员删除</cite>
-                            
-                        </a>
                     </li>
                     <li>
                         <a href="javascript:;">
                             <i class="iconfont">&#xe70b;</i>
-                            <cite>会员管理</cite>
+                            <cite>角色管理</cite>
                             <i class="iconfont nav_right">&#xe697;</i>
                         </a>
                         <ul class="sub-menu">
                             <li>
-                                <a _href="xxx.html">
+                                <a _href="${pageContext.request.contextPath}/views/role-list.jsp">
                                     <i class="iconfont">&#xe6a7;</i>
-                                    <cite>会员列表</cite>
-                                    
-                                </a>
-                            </li >
-                            <li>
-                                <a _href="xx.html">
-                                    <i class="iconfont">&#xe6a7;</i>
-                                    <cite>会员删除</cite>
-                                    
+                                    <cite>角色列表</cite>
                                 </a>
                             </li>
-                            <li>
-                                <a _href="xx.html">
-                                    <i class="iconfont">&#xe6a7;</i>
-                                    <cite>等级管理</cite>
-                                    
-                                </a>
-                            </li>
-                            
                         </ul>
                     </li>
                 </ul>
@@ -114,39 +88,6 @@ To change this template use File | Settings | File Templates.
                         <a _href="order-list.html">
                             <i class="iconfont">&#xe6a7;</i>
                             <cite>订单列表</cite>
-                        </a>
-                    </li >
-                </ul>
-            </li>
-            <li>
-                <a href="javascript:;">
-                    <i class="iconfont">&#xe726;</i>
-                    <cite>管理员管理</cite>
-                    <i class="iconfont nav_right">&#xe697;</i>
-                </a>
-                <ul class="sub-menu">
-                    <li>
-                        <a _href="admin-list.html">
-                            <i class="iconfont">&#xe6a7;</i>
-                            <cite>管理员列表</cite>
-                        </a>
-                    </li >
-                    <li>
-                        <a _href="admin-role.html">
-                            <i class="iconfont">&#xe6a7;</i>
-                            <cite>角色管理</cite>
-                        </a>
-                    </li >
-                    <li>
-                        <a _href="admin-cate.html">
-                            <i class="iconfont">&#xe6a7;</i>
-                            <cite>权限分类</cite>
-                        </a>
-                    </li >
-                    <li>
-                        <a _href="admin-rule.html">
-                            <i class="iconfont">&#xe6a7;</i>
-                            <cite>权限管理</cite>
                         </a>
                     </li >
                 </ul>
